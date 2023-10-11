@@ -34,3 +34,17 @@ mongoose
 
 app.use("/api/v1/user", userRouter);
 app.use("/api/v1/auth", authRouter);
+
+// Middlewares
+
+//Error handling
+app.use((err, req, res, next) => {
+  const statusCode = err.statusCode || 500;
+  const message = err.message || "Internal Error Message";
+
+  return res.status(statusCode).json({
+    status: false,
+    statusCode,
+    message,
+  });
+});
