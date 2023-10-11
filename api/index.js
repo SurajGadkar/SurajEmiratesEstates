@@ -7,6 +7,9 @@ dotenv.config();
 const PORT = 3000;
 const MongoURI = process.env.MONGO_URI;
 
+// Import Routers
+import userRouter from "./routes/user.route.js";
+
 mongoose
   .connect(MongoURI)
   .then(() => {
@@ -18,3 +21,7 @@ mongoose
   .catch((err) => {
     console.log("Error : ", err);
   });
+
+//Routes
+
+app.use("/api/v1/user", userRouter);
