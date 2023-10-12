@@ -39,7 +39,7 @@ export const signin = async (req, res, next) => {
         //expires: new Date(Date.now() + 24 * 60 * 60 * 60 * 200),
       })
       .status(200)
-      .json({ rest });
+      .json({ ...rest, token });
   } catch (err) {
     next(errorHandler());
   }
@@ -56,7 +56,7 @@ export const google = async (req, res, next) => {
       res
         .cookie("access_token", token, { httpOnly: true })
         .status(200)
-        .json({ ...rest });
+        .json({ ...rest, token });
     } else {
       const generatedPassword =
         Math.random().toString(36).slice(-8) +
@@ -79,7 +79,7 @@ export const google = async (req, res, next) => {
       res
         .cookie("access_token", token, { httpOnly: true })
         .status(200)
-        .json({ ...rest });
+        .json({ ...rest, token });
     }
   } catch (err) {
     next(err);
