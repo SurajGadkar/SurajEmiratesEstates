@@ -18,11 +18,7 @@ const corsOptions = {
 //encoding setups
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(
-  cors({
-    credentials: true,
-  })
-);
+app.use(cors());
 app.use(cookieParser());
 
 // Import Routers

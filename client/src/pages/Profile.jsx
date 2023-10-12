@@ -1,5 +1,11 @@
 import React, { useState, useRef, useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  updateUserSuccess,
+  updateUserFailure,
+  updateUserStart,
+} from "../redux/user/userSlice.js";
+
 import { app } from "../firebase";
 import {
   getDownloadURL,
@@ -11,7 +17,8 @@ import axios from "axios";
 
 function Profile() {
   const fileRef = useRef(null);
-  const { currentUser } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+  const { currentUser, error, isLoading } = useSelector((state) => state.user);
   const [file, setFile] = useState(undefined);
   const [formData, setFormdata] = useState({});
   const [filePerc, setFilePerc] = useState(0);
@@ -26,21 +33,24 @@ function Profile() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    /*try {
+    dispatch(updateUserStart());
+    try {
       const { _id: userId } = currentUser;
       const response = await axios.patch(
-        `/api/v1/profile/:${userId}`,
+        `/api/v1/user/update/${userId}`,
         JSON.stringify(formData),
         {
           headers: {
-            "Content-Type": "Application/json",
+            "Content-Type": "application/json",
           },
         }
       );
-      console.log(response.data);
+      //console.log(response.data);
+      dispatch(updateUserSuccess(response.data));
     } catch (err) {
+      dispatch(updateUserFailure(err.response.data.message));
       console.log(err);
-    }*/
+    }
   };
 
   useEffect(() => {
@@ -76,7 +86,7 @@ function Profile() {
   return (
     <div className="p-3 max-w-lg mx-auto">
       <h1 className="text-3xl font-semibold text-center my-7">Profile</h1>
-      <form className="flex flex-col gap-4">
+      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
         <input
           onChange={(e) => setFile(e.target.files[0])}
           className="hidden"
@@ -110,6 +120,8 @@ function Profile() {
           type="text"
           placeholder="username"
           id="username"
+          defaultValue={currentUser.username}
+          required
         />
         <input
           onChange={handleChange}
@@ -117,6 +129,8 @@ function Profile() {
           type="email"
           placeholder="email"
           id="email"
+          defaultValue={currentUser.email}
+          required
         />
         <input
           className="border p-3 rounded-lg"
@@ -124,15 +138,18 @@ function Profile() {
           placeholder="password"
           id="password"
           onChange={handleChange}
+          required
         />
         <button
+          disabled={isLoading}
           className="bg-slate-700 rounded-lg h-11 uppercase text-white hover:opacity-95 disabled:opacity-60"
           type="submit"
-          onClick={handleSubmit}
         >
-          Update
+          {isLoading ? "Loading..." : "Upload"}
         </button>
       </form>
+      {error && <p className="text-red-500 text-sm text-center">{error}</p>}
+      {!error && <p className="text-green-700 text-sm text-center">Success!</p>}
       <div className="flex justify-between mt-5">
         <span className="text-red-700 cursor-pointer">Delete Account</span>
         <span className="text-red-700 cursor-pointer">Sign Out</span>
