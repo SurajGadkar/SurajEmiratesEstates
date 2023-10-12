@@ -22,7 +22,6 @@ export const signup = async (req, res, next) => {
 export const signin = async (req, res, next) => {
   try {
     const { email, password } = req.body;
-    console.log("here");
     const validUser = await UserModel.findOne({ email });
     if (!validUser) {
       return next(errorHandler(404, "User does not exists..."));
@@ -41,6 +40,7 @@ export const signin = async (req, res, next) => {
       })
       .status(200)
       .json(rest);
+    
   } catch (err) {
     next(errorHandler());
   }

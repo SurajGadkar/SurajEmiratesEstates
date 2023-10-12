@@ -6,7 +6,7 @@ import { errorHandler } from "../../../api/utils/error";
 
 function SignUp() {
   const [formData, setFormData] = useState({});
-  const [error, setError] = useState(false);
+  const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const handleChange = (e) => {
@@ -21,7 +21,7 @@ function SignUp() {
     setIsLoading(true);
     try {
       const response = await axios.post(
-        `${BACKEND_URL}/auth/signup`,
+        "/api/v1/auth/signup",
         JSON.stringify(formData),
         {
           headers: {
