@@ -8,6 +8,7 @@ import {
   signInSucess,
   signInFailure,
 } from "../redux/user/userSlice";
+import OAuth from "../components/OAuth";
 
 function Signin() {
   const [formData, setFormData] = useState({});
@@ -22,7 +23,7 @@ function Signin() {
     });
   };
 
-  console.log(currentUser);
+  //console.log(currentUser);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -71,6 +72,7 @@ function Signin() {
         >
           {isLoading ? "Loading..." : "Sign In"}
         </button>
+        <OAuth />
       </form>
       {error && <p className="text-red-600">{error}</p>}
       <div className="flex gap-2 mt-5">

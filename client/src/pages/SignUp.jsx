@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { BACKEND_URL } from "../utils";
 import { errorHandler } from "../../../api/utils/error";
+import OAuth from "../components/OAuth";
 
 function SignUp() {
   const [formData, setFormData] = useState({});
@@ -74,6 +75,7 @@ function SignUp() {
         >
           {isLoading ? "Loading ..." : "Sign Up"}
         </button>
+        <OAuth />
       </form>
       {error && <p className="text-red-600">{error.message}</p>}
       <div className="flex gap-2 mt-5">
