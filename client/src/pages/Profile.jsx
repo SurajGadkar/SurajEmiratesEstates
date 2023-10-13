@@ -11,7 +11,7 @@ import {
   signOutFailure,
   signOutStart,
 } from "../redux/user/userSlice.js";
-
+import { Link } from "react-router-dom";
 import { app } from "../firebase";
 import {
   getDownloadURL,
@@ -183,9 +183,12 @@ function Profile() {
         >
           {isLoading ? "Loading..." : "Upload"}
         </button>
-        <button className="bg-green-700 text-sm h-11 uppercase text-white hover:opacity-95 rounded-lg">
+        <Link
+          to="/create-listing"
+          className="bg-green-700 text-sm h-11 uppercase p-2.5 text-white text-center hover:opacity-95 rounded-lg"
+        >
           create listing
-        </button>
+        </Link>
       </form>
       {error && <p className="text-red-500 text-sm text-center">{error}</p>}
       {updateSuccess && (
