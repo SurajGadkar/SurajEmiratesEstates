@@ -7,6 +7,9 @@ import {
   deleteUserError,
   deleteUserStart,
   deleteUserSuccess,
+  signOutSuccess,
+  signOutFailure,
+  signOutStart,
 } from "../redux/user/userSlice.js";
 
 import { app } from "../firebase";
@@ -74,10 +77,21 @@ function Profile() {
       if (!response) {
         dispatch(deleteUserError("No user found!"));
       }
-      console.log("user Deleted!", response.data);
+      //console.log("user Deleted!", response.data);
       dispatch(deleteUserSuccess(response.data));
     } catch (err) {
       console.log(err);
+    }
+  };
+
+  const handleSignOut = async (e) => {
+    dispatch(signOutStart());
+    try {
+      const response = await axios.post("/api/v1/auth/signout");
+      dispatch(deleteUserSuccess(response.data));
+    } catch (err) {
+      console.log(err.response);
+      dispatch(deleteUserError(err.message));
     }
   };
 
@@ -181,7 +195,9 @@ function Profile() {
         >
           Delete Account
         </span>
-        <span className="text-red-700 cursor-pointer">Sign Out</span>
+        <span onClick={handleSignOut} className="text-red-700 cursor-pointer">
+          Sign Out
+        </span>
       </div>
     </div>
   );
