@@ -122,7 +122,7 @@ function Profile() {
   return (
     <div className="p-3 max-w-lg mx-auto">
       <h1 className="text-3xl font-semibold text-center my-7">Profile</h1>
-      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+      <form onSubmit={handleSubmit} className="flex flex-col gap-2">
         <input
           onChange={(e) => setFile(e.target.files[0])}
           className="hidden"
@@ -182,6 +182,9 @@ function Profile() {
           type="submit"
         >
           {isLoading ? "Loading..." : "Upload"}
+        </button>
+        <button className="bg-green-700 text-sm h-11 uppercase text-white hover:opacity-95 rounded-lg">
+          create listing
         </button>
       </form>
       {error && <p className="text-red-500 text-sm text-center">{error}</p>}

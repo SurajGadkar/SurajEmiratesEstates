@@ -8,7 +8,7 @@ export const test = async (req, res, next) => {
     if (!token) {
       res.send("No Token");
     }
-    res.status(200).json({ message: "Sucess, here your token", token });
+    res.status(200).json(token);
   } catch (err) {
     next(err);
   }
