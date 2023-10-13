@@ -4,6 +4,9 @@ import {
   updateUserSuccess,
   updateUserFailure,
   updateUserStart,
+  deleteUserError,
+  deleteUserStart,
+  deleteUserSuccess,
 } from "../redux/user/userSlice.js";
 
 import { app } from "../firebase";
@@ -23,6 +26,7 @@ function Profile() {
   const [formData, setFormdata] = useState({});
   const [filePerc, setFilePerc] = useState(0);
   const [fileUploadError, setFileUploadError] = useState(false);
+  const [updateSuccess, setUpdateSucces] = useState(false);
 
   const handleChange = (e) => {
     setFormdata({
@@ -46,8 +50,10 @@ function Profile() {
         }
       );
       //console.log(response.data);
+      setUpdateSucces(true);
       dispatch(updateUserSuccess(response.data));
     } catch (err) {
+      setUpdateSucces(false);
       dispatch(updateUserFailure(err.response.data.message));
       console.log(err);
     }
@@ -58,6 +64,22 @@ function Profile() {
       handleFileUpload(file);
     }
   }, [file]);
+
+  const handleUserDelete = async (e) => {
+    try {
+      dispatch(deleteUserStart());
+      const { _id: userId } = currentUser;
+      const response = await axios.delete(`/api/v1/user/delete/${userId}`);
+
+      if (!response) {
+        dispatch(deleteUserError("No user found!"));
+      }
+      console.log("user Deleted!", response.data);
+      dispatch(deleteUserSuccess(response.data));
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   const handleFileUpload = (file) => {
     const storage = getStorage(app);
@@ -149,9 +171,16 @@ function Profile() {
         </button>
       </form>
       {error && <p className="text-red-500 text-sm text-center">{error}</p>}
-      {!error && <p className="text-green-700 text-sm text-center">Success!</p>}
+      {updateSuccess && (
+        <p className="text-green-700 text-sm text-center">Success!</p>
+      )}
       <div className="flex justify-between mt-5">
-        <span className="text-red-700 cursor-pointer">Delete Account</span>
+        <span
+          className="text-red-700 cursor-pointer"
+          onClick={handleUserDelete}
+        >
+          Delete Account
+        </span>
         <span className="text-red-700 cursor-pointer">Sign Out</span>
       </div>
     </div>
