@@ -181,7 +181,7 @@ function Profile() {
           className="bg-slate-700 rounded-lg h-11 uppercase text-white hover:opacity-95 disabled:opacity-60"
           type="submit"
         >
-          {isLoading ? "Loading..." : "Upload"}
+          {isLoading ? "Loading..." : "update"}
         </button>
         <Link
           to="/create-listing"

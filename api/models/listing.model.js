@@ -33,18 +33,21 @@ const ListingSchema = new mongoose.Schema(
     furnished: {
       type: Boolean,
       required: true,
+      default: false,
     },
     parking: {
       type: Boolean,
       required: true,
+      default: false,
     },
     type: {
       type: String,
-      required: true,
+      default : false
     },
     offer: {
       type: Boolean,
       required: true,
+      default: false,
     },
     imageUrls: {
       type: Array,
