@@ -1,8 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import ListingItem from "../components/ListingItem";
 
 function Search() {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
+  const [listings, setListings] = useState(null);
 
   const [sidebarData, setSidebarData] = useState({
     searchTerm: "",
@@ -75,7 +80,23 @@ function Search() {
         order: orderFromURL || "desc",
       });
     }
+
+    const getData = async () => {
+      try {
+        setLoading(true);
+        const searchQuery = urlParams.toString();
+        const response = await axios.get(`/api/v1/listing/get?${searchQuery}`);
+        const data = await response.data;
+        setLoading(false);
+        setListings(data);
+      } catch (err) {
+        setLoading(false);
+        console.log(err);
+      }
+    };
+    getData();
   }, [location.search]);
+  console.log(listings);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -211,8 +232,28 @@ function Search() {
           </button>
         </form>
       </div>
-      <div className="text-3xl font-semibold border-b-2 p-3 text-slate-700 mt-5">
-        <h1>Listing results : </h1>
+      <div className="flex-1">
+        <h1 className="text-3xl w-full font-semibold border-b-2 p-3 text-slate-700 mt-5">
+          Listing results :{" "}
+        </h1>
+        {error ? " " : ""}
+        <div className="flex flex-wrap gap-4">
+          {!loading && listings?.length === 0 && (
+            <p className="text-xl mt-5 font-normal">No listing found !!!</p>
+          )}
+          {loading && (
+            <p className="text-xl mt-5 mx-auto font-normal text-center">
+              Loading...
+            </p>
+          )}
+          <div className="flex gap-4 sm:gap-6 flex-wrap mt-5 justify-center">
+            {!loading &&
+              listings &&
+              listings.map((listing) => {
+                return <ListingItem key={listing._id} listing={listing} />;
+              })}
+          </div>
+        </div>
       </div>
     </div>
   );
