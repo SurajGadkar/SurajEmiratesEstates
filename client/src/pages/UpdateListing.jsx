@@ -35,15 +35,14 @@ function Listing() {
   const [uploading, setUploading] = useState(false);
 
   const { currentUser } = useSelector((state) => state.user);
-
   useEffect(() => {
     const getListing = async () => {
       try {
         const listingId = params.listingId;
 
         const listing = await axios.get(`/api/v1/listing/get/${listingId}`);
-        console.log(listing.data);
-        setFormData(listing.data);
+        const data = await listing.data;
+        setFormData({ ...formData, ...data });
       } catch (err) {
         console.log(err);
       }
@@ -121,7 +120,7 @@ function Listing() {
     }
   };
 
-  //console.log(formData);
+  // console.log(formData);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -137,7 +136,7 @@ function Listing() {
         setLoading(false);
         return setError("Discount price must be lesser than regular price");
       }
-      const response = await axios.patch(
+      const response = await axios.post(
         `/api/v1/listing/${formData._id}`,
         JSON.stringify(formData),
         {
@@ -148,7 +147,7 @@ function Listing() {
       );
       setLoading(false);
       console.log("New listing created.", response.data);
-      navigate(`/listing/${response.data._id}`);
+      navigate(`/listings/${response.data._id}`);
     } catch (err) {
       setLoading(false);
       setError(err.message);
