@@ -1,9 +1,11 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { MdOutlineLocationOn } from "react-icons/md";
+import { FaBath, FaBed } from "react-icons/fa";
 
 function ListingItem({ listing }) {
   return (
-    <div className="bg-white border rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 overflow-hidden w-[360px] sm:min-w-[400px]">
+    <div className="bg-white border rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 overflow-hidden w-[250px] sm:min-w-[300px]">
       <Link to={`/listings/${listing._id}`}>
         <img
           className="h-[220px] w-[360px] sm:min-w-[400px] object-cover hover:scale-105 transition-scale duration-300 border-white"
@@ -15,7 +17,7 @@ function ListingItem({ listing }) {
             {listing.name}
           </p>
           <div className="flex gap-1 items-center">
-            location icon{" "}
+            <MdOutlineLocationOn className="text-green-900 text-xl" />
             <p className="text-sm text-gray-700 truncate">{listing.address}</p>
           </div>
         </div>
@@ -23,7 +25,7 @@ function ListingItem({ listing }) {
           {listing.description.slice(0, 120) + "..."}
         </p>
 
-        <p className="p-3 font-semibold text-slate-500">
+        <p className="p-3 font-semibold text-slate-900">
           ${" "}
           {listing.offer
             ? listing.discountPrice || listing.regularPrice
@@ -31,12 +33,14 @@ function ListingItem({ listing }) {
           / month
         </p>
         <div className="text-slate-700 flex p-3 gap-4 ">
-          <div className=" font-bold text-xs">
+          <div className=" flex gap-1 items-center font-bold text-xs">
+            <FaBed className="text-2xl text-blue-700" />
             {listing.bedrooms > 1
               ? `${listing.bedrooms} bedrooms`
               : `${listing.bedrooms} bedroom`}
           </div>
-          <div className="font-bold text-xs">
+          <div className="flex gap-1 items-center font-bold text-xs">
+            <FaBath className="text-lg text-blue-700" />
             {listing.bathrooms > 1
               ? `${listing.bathrooms} bathrooms`
               : `${listing.bathrooms} bathroom`}

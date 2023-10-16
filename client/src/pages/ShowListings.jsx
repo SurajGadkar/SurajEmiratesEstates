@@ -7,6 +7,9 @@ import { Navigation } from "swiper/modules";
 import "swiper/css/bundle";
 import { useSelector } from "react-redux";
 import Contact from "../components/Contact.jsx";
+import { MdOutlineLocationOn } from "react-icons/md";
+import { FaBath, FaBed, FaParking } from "react-icons/fa";
+import { GiSofa } from "react-icons/gi";
 
 function ShowListings() {
   SwiperCore.use([Navigation]);
@@ -65,6 +68,7 @@ function ShowListings() {
           <div className="flex m-12 max-w-200 flex-col gap-4 ">
             <div className="flex gap-2">
               <h3 className="font-semibold text-lg">{listingData.name} - </h3>
+
               <h3 className="font-semibold text-lg">
                 $
                 {listingData.offer
@@ -73,6 +77,10 @@ function ShowListings() {
                 / month
               </h3>
             </div>
+            <p className="flex gap-2 text-md ">
+              <MdOutlineLocationOn className="text-green-900 text-xl" />
+              <p>{listingData.address}</p>
+            </p>
             <div className="flex gap-4">
               {listingData.type === "sell" ? (
                 <button
@@ -107,23 +115,23 @@ function ShowListings() {
             </p>
             <ul className="p-4 flex items-center gap-4 md :gap-6 text-slate-900 font-semibold text-sm flex-wrap">
               <li className="flex items-center gap-2 whitespace-nowrap ">
-                bed-icon
+                <FaBed className="text-2xl text-blue-700" />
                 {listingData.bedrooms > 1
                   ? `${listingData.bedrooms} beds`
                   : `${listingData.bedrooms} bed`}
               </li>
               <li className="flex items-center gap-2 whitespace-nowrap ">
-                bath-icon
+                <FaBath className="text-lg text-blue-700" />
                 {listingData.bathrooms > 1
                   ? `${listingData.bathrooms} baths`
                   : `${listingData.bathrooms} bath`}
               </li>
               <li className="flex items-center gap-2 whitespace-nowrap ">
-                park-icon
+                <FaParking className="text-xl text-blue-700" />
                 {listingData.parking ? "Parking" : "No Parking"}
               </li>
               <li className="flex items-center gap-2 whitespace-nowrap ">
-                furnished-icon
+                <GiSofa className="text-2xl text-blue-700" />
                 {listingData.furnished ? "Furnished" : "Not furnished"}
               </li>
             </ul>
