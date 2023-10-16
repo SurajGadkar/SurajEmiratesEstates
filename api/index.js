@@ -5,6 +5,7 @@ import bodyParser from "body-parser";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 
+const __dirname = path.resolve();
 const app = express();
 dotenv.config();
 const PORT = 3000;
@@ -25,6 +26,8 @@ app.use(cookieParser());
 import userRouter from "./routes/user.route.js";
 import authRouter from "./routes/auth.route.js";
 import listingRouter from "./routes/listing.route.js";
+import path from "path";
+
 mongoose
   .connect(MongoURI, {
     useNewUrlParser: true,
@@ -46,6 +49,10 @@ app.use("/api/v1/user", userRouter);
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/listing", listingRouter);
 
+app.use(express.static(path.join(__dirname, "/client/dist")));
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "client", "dist", "index.html"));
+});
 // Middlewares
 
 //Error handling
