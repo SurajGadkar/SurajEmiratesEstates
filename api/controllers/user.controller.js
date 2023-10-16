@@ -1,14 +1,12 @@
 import { errorHandler } from "../utils/error.js";
 import bcrypt from "bcryptjs";
 import UserModel from "../models/user.model.js";
+import ListingModel from "../models/listing.model.js";
 
 export const test = async (req, res, next) => {
   try {
-    const token = req.cookies.access_token;
-    if (!token) {
-      res.send("No Token");
-    }
-    res.status(200).json(token);
+    const users = await UserModel.find({});
+    res.status(200).json(users);
   } catch (err) {
     next(err);
   }
@@ -66,5 +64,18 @@ export const deleteUser = async (req, res, next) => {
     }
   } catch (err) {
     next(err);
+  }
+};
+
+export const getUserListings = async (req, res, next) => {
+  if (req.params.id !== req.user.id) {
+    return next(errorHandler(401, "You only view your own listings"));
+  }
+
+  try {
+    const listings = await ListingModel.find({ userRef: req.params.id });
+    res.status(200).json(listings);
+  } catch (error) {
+    next(error);
   }
 };

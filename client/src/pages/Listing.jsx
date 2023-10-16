@@ -106,16 +106,20 @@ function Listing() {
   //console.log(formData);
 
   const handleSubmit = async (e) => {
+    console.log("clicked");
     e.preventDefault();
     setLoading(true);
     setError(false);
     try {
-      if (formData.imageUrls.length < 1)
+      if (formData.imageUrls.length < 1) {
+        setLoading(false);
         return setError("You must upload atleast 1 image");
+      }
 
-      if (formData.regularPrice < formData.discountPrice)
+      if (formData.regularPrice < formData.discountPrice) {
+        setLoading(false);
         return setError("Discount price must be lesser than regular price");
-
+      }
       const response = await axios.post(
         "/api/v1/listing/new",
         JSON.stringify({ ...formData, userRef: currentUser._id }),
@@ -127,7 +131,7 @@ function Listing() {
       );
       setLoading(false);
       console.log("New listing created.", response.data);
-      //navigate("/");
+      navigate(`/listing/${response.data._id}`);
     } catch (err) {
       setLoading(false);
       setError(err.message);
@@ -352,14 +356,16 @@ function Listing() {
                     </div>
                   );
                 })}
-              <button
+              <input
                 onClick={handleSubmit}
                 className="p-3 w-full bg-slate-700 text-white rounded-lg text-center uppercase hover:opacity-95 disabled:opacity-60"
                 type="submit"
-              >
-                {loading ? "Loading..." : "create list"}
-              </button>
+                value={loading || uploading ? "Loading..." : "create list"}
+              />
             </div>
+            {error && (
+              <p className="text-sm text-red-700 text center">{error}</p>
+            )}
           </div>
         </div>
       </form>
