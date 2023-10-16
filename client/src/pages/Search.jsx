@@ -8,6 +8,7 @@ function Search() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const [listings, setListings] = useState(null);
+  const [showMore, setShowMore] = useState(false);
 
   const [sidebarData, setSidebarData] = useState({
     searchTerm: "",
@@ -84,9 +85,14 @@ function Search() {
     const getData = async () => {
       try {
         setLoading(true);
+        setShowMore(false);
         const searchQuery = urlParams.toString();
         const response = await axios.get(`/api/v1/listing/get?${searchQuery}`);
         const data = await response.data;
+
+        if (data.length > 8) setShowMore(true);
+        else setShowMore(false);
+
         setLoading(false);
         setListings(data);
       } catch (err) {
@@ -96,7 +102,7 @@ function Search() {
     };
     getData();
   }, [location.search]);
-  console.log(listings);
+  //console.log(listings);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -110,6 +116,22 @@ function Search() {
     urlParams.set("order", sidebarData.order);
     const searchQuery = urlParams.toString();
     navigate(`/search?${searchQuery}`);
+  };
+
+  const onShowMoreClick = async (e) => {
+    e.preventDefault();
+    const numberOfListings = listings.length;
+    const startIndex = numberOfListings;
+    const urlParams = new URLSearchParams(location.search);
+    urlParams.set("startIndex", startIndex);
+    const searchQuery = urlParams.toString();
+
+    const response = await axios.get(`/api/v1/listing/get?${searchQuery}`);
+    const data = await response.data;
+    if (data.length < 9) {
+      setShowMore(false);
+    }
+    setListings([...listings, ...data]);
   };
   return (
     <div className="flex flex-col md:flex-row gap-4 ">
@@ -232,7 +254,7 @@ function Search() {
           </button>
         </form>
       </div>
-      <div className="flex-1">
+      <div className="flex-1 mx-auto md:mx-5 ">
         <h1 className="text-3xl w-full font-semibold border-b-2 p-3 text-slate-700 mt-5">
           Listing results :{" "}
         </h1>
@@ -253,6 +275,14 @@ function Search() {
                 return <ListingItem key={listing._id} listing={listing} />;
               })}
           </div>
+          {showMore && (
+            <button
+              onClick={onShowMoreClick}
+              className="text-green-700 hover:underline p-7"
+            >
+              Show more
+            </button>
+          )}
         </div>
       </div>
     </div>

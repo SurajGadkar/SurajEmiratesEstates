@@ -3,8 +3,8 @@ import { Link } from "react-router-dom";
 
 function ListingItem({ listing }) {
   return (
-    <div className="bg-white border rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 overflow-hidden">
-      <Link to={`/listing/${listing._id}`}>
+    <div className="bg-white border rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 overflow-hidden w-[360px] sm:min-w-[400px]">
+      <Link to={`/listings/${listing._id}`}>
         <img
           className="h-[220px] w-[360px] sm:min-w-[400px] object-cover hover:scale-105 transition-scale duration-300 border-white"
           src={listing.imageUrls[0]}
@@ -19,7 +19,9 @@ function ListingItem({ listing }) {
             <p className="text-sm text-gray-700 truncate">{listing.address}</p>
           </div>
         </div>
-        <p className="p-3  text-slate-500">{listing.description}</p>
+        <p className="p-3  text-slate-700">
+          {listing.description.slice(0, 120) + "..."}
+        </p>
 
         <p className="p-3 font-semibold text-slate-500">
           ${" "}
