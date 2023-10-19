@@ -123,12 +123,13 @@ function Home() {
             </div>
           </div>
         )}
+
         {rentListings && rentListings.length && (
           <div className="">
             <div className="my-5">
               {" "}
               <h2 className="text-2xl font-semibold text-slate-600">
-                Properties for sale
+                Properties for Rent
               </h2>
               <Link
                 className="text-sm text-blue-800 hover:underline"
@@ -150,7 +151,7 @@ function Home() {
             <div className="my-5">
               {" "}
               <h2 className="text-2xl font-semibold text-slate-600">
-                Properties for rent
+                Properties for Sale
               </h2>
               <Link
                 className="text-sm text-blue-800 hover:underline"

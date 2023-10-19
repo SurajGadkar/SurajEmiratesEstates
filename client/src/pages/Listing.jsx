@@ -131,7 +131,7 @@ function Listing() {
       );
       setLoading(false);
       console.log("New listing created.", response.data);
-      navigate(`/listing/${response.data._id}`);
+      navigate(`/listings/${response.data._id}`);
     } catch (err) {
       setLoading(false);
       setError(err.message);
