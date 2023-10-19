@@ -32,7 +32,7 @@ function OAuth() {
         }
       );
 
-      console.log(response.data);
+      //console.log(response.data);
       dispatch(signInSucess(response.data));
       navigate("/");
     } catch (err) {
@@ -42,6 +42,7 @@ function OAuth() {
 
   return (
     <button
+    disabledd
       type="button"
       onClick={handleGoogleClick}
       className="bg-red-700 text-white p-3 rounded-lg uppercase"
